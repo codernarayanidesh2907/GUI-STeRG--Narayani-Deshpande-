@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STeRG Mission Control</title>
+    <link rel="stylesheet" href="project.css">
+   <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
+    <script src="camera.js" defer></script>
+    <script src="GUI.js" defer></script>
+   <script src="Timer.js"defer></script>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <header class="main-header">
+        <div class="logo-left">
+        <img src="mitwpu1.png" alt="MIT-WPU Logo">
+    
+            
+        </div>
+        <div class="main-timer"id="timer">T-00:00</div>
+
+       <div class="logo-right">
+        <img src="sterg1.png" alt="STeRG Logo">
+        </div>
+    </header>
+
+    <section class="telemetry-grid">
+        <div class="data-card">
+            <label>ACCELERATION</label>
+            <div class="shit">
+            <div class="val"><span>X:</span><span id="accX"> --- m/s²</span></div>
+            <div class="val"><span>Y:</span><span id="accY"> --- m/s²</span></div>
+            <div class="val"><span>Z:</span><span id="accZ"> --- m/s²</span></div>
+            </div>
+        </div>
+        <div class="data-card">
+            <label>GYROSCOPE</label>
+            <div class="shit">
+            <div class="val"><span>X:</span><span id="gyroX"> --- °</span></div>
+            <div class="val"><span>Y:</span><span id="gyroY"> --- °</span></div>
+            <div class="val"><span>Z:</span><span id="gyroZ"> --- °</span></div>
+            </div>
+        </div>
+        <div class="data-card">
+            <label>MAGNETOMETER</label>
+            <div class="shit">
+            <div class="val"><span>X:</span><span id="magX">    --- uT</span></div>
+            <div class="val"><span>Y:</span><span id="magY">    --- uT</span></div>
+            <div class="val"><span>Z:</span><span id="magZ">    --- uT</span></div>
+            </div>
+        </div>
+        <div class="data-card">
+            <label>GNSS</label>
+            <div class="shit">
+            <div class="val"><span>Lat:</span><span id="lat"> ----</span></div>
+            <div class="val"><span>Long:</span><span id="long"> ----</span></div>
+            <div class="val"><span>Sat:</span><span id="sat"> ----</span></div>
+            </div>
+        </div>
+        <div class="data-card wide-card">
+            <label>TELEMETRY</label>
+            <div class="inline-vals">
+                <div class="val"><span>PRESSURE:</span><span id="pressure"> 2.03 Pa</span></div>
+                <div class="val"><span>CURRENT:</span><span id="current"> 2 mA</span></div>
+            </div>
+            <div class="big-val">
+                <div class="val"><span>ALTITUDE:</span><span id="altitude"> 500 m</span></div>
+                <div class="val"><span>TEMPERATURE:</span><span id="temp"> 25 °C</span></div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="status-strip">
+        <div class="indicator active">E_NONE</div>
+        <div class="indicator error">E_LOW_BAT</div>
+        <div class="indicator error">E_COMM_DELAY</div>
+        
+        <div class="indicator error">E_SD_INIT</div>
+        <div class="indicator error">E_PARA_1</div>
+        <div class="indicator error">E_COMMS_LOSS</div>
+        
+        </section>
+        <section class="status-strip">
+
+        <div class="indicator error">E_SD_FULL</div>
+        <div class="indicator error">E_SD_STALL</div>
+        
+        <div class="indicator error">E_PREMAT_PARA_1</div>
+        <div class="indicator error">E_PREMAT_PARA_2</div>
+        <div class="indicator error">E_SD_MOUNT</div>
+    </section>
+    
+
+    <div class="main-content">
+        <div class="visual-left">
+            <div class="view-panel terrain-view">
+                <div class="panel-label">MAP</div>
+                <div class="image-placeholder"></div>
+            </div>
+            <div class="command-line" contenteditable="true">
+                <span contenteditable="false" class="cmd-label">ENTER COMMAND:</span>
+                
+            </div>
+        </div>
+
+        <div class="visual-right">
+            <div class="view-panel graph-view">
+                <div class="panel-label">GRAPH</div>
+                
+            </div>
+            <div class="camera-btn" onclick="openCamera()">CAMERA</div>
+        </div>
+
+        <aside class="sidebar-panel">
+            <div class="standby-indicator">STANDBY</div>
+            <div class="rocket-model-panel">
+    <div class="rocket-container">
+        </div>
+</div>
+        </aside>
+    </div>
+
+    <footer class="footer-stats">
+        <div class="mission-phases">
+            <label class="mission-label">MISSION PHASE</label>
+            <div class="phase-row">
+                <div class="phase"><span class="node active"></span>INIT</div>
+                <div class="arrow">→</div>
+                <div class="phase"><span class="node active"></span>STANDBY</div>
+                <div class="arrow">→</div>
+                <div class="phase"><span class="node active"></span>ELEVATION</div>
+                <div class="arrow">→</div>
+                <div class="phase"><span class="node"></span>RETURN</div>
+                <div class="arrow">→</div>
+                <div class="phase"><span class="node"></span>RECOVERY</div>
+            </div>
+        </div>
+        <div class="temp-battery">
+            
+            <div class="battery-section">
+                <span class="battery-label">BATTERY: </span>
+                <div class="battery-bar"><div class="fill"></div></div>
+                <span>100%</span>
+            </div>
+        </div>
+    
+</div>
+
+</body>
+</html>
