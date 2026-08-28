@@ -1,0 +1,493 @@
+:root {
+    --bg-color: #020b0d;
+    --panel-bg: #051214;
+    --cyan: #00FFDE;
+    --border-dim: #0a3d42;
+    --text-main: #e2fdfa;
+    --text-dim:#7da5a8;
+    --error-red: #ff3333;
+    --success-green: #33ff33;
+}
+@font-face {
+    font-family: 'Digital7';
+    src: url('fonts/digital-7.regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'GardionDemo';
+    src: url('fonts/GardionDemo.otf') format('opentype');
+}
+
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Roboto Flex', monospace;
+    font-weight: bolder;
+    margin: 0;
+    padding: 10px;
+    text-transform: none;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Layout */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 98%;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--cyan);
+    padding: 5px 15px;
+}
+.title {
+    font-size: 3rem;
+    font-family: 'GardionDemo', monospace;
+    font-weight: normal;
+    
+}
+.timer {
+    font-size: 3rem;
+    font-family: 'Digital7', monospace;
+    letter-spacing: 4px;
+    font-weight: normal;
+}
+.mit-logo {
+    height: 60px;   /* adjust */
+    width: auto;
+}
+
+.sterg-logo {
+    height: 60px;   /* adjust */
+    width: auto;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr 250px;
+    grid-template-rows: 1fr;
+    gap: 10px;
+    flex-grow: 1;
+    height: 100%;
+    overflow: hidden;
+
+}
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;  
+    height: 100%;       /* Constrain container to grid row height */
+    min-height: 0; 
+}
+
+
+/* Panels */
+.panel {
+    border: 1px solid var(--cyan);
+    background: var(--panel-bg);
+    display: flex;
+    flex-direction: column;
+    border-radius: none;
+    
+   
+    
+}
+
+.panel-header {
+    background: var(--panel-bg);
+    border-bottom: 1px solid var(--cyan);
+    padding: 2px 8px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.panel-header.small {
+    display: inline-block;
+    border-right: 1px solid var(--cyan);
+    width: fit-content;
+}
+
+.panel-body {
+    padding: 11px;
+    font-size: 1rem;
+}
+
+.panel-body p { margin: 5.5px 0; display: flex; justify-content: space-between; }
+
+/* Mid Section */
+.visuals {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 1.5rem;
+    margin-left: 0.6rem;
+    height: 100%;
+    min-height: 0;
+}
+
+.center-subgrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    margin-left: 0;
+    margin-right: 0.6rem;
+    height: 100%;
+    min-height: 0;
+}
+.model-3d {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: calc(100% - 4px);
+}
+/* --- Three.js 3D Model Integration Styles --- */
+#model-container {
+    flex-grow: 1;          
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: #000000;   
+}
+
+
+#model-container canvas {
+    display: block;        
+    width: 100% !important;
+    height: 100% !important;
+}
+/* Placeholder Orientation Panel Overlay */
+.orientation-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    background: rgba(5, 18, 20, 0.85); 
+             
+    padding: 6px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;                         
+    box-sizing: border-box;
+}
+
+.rpy-item {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    font-family: 'Roboto Flex', monospace;
+}
+.controls-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+
+.btn {
+    flex: 1;
+    background: rgba(5, 18, 20, 0.85); /* Matches panel background color */
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
+    padding: 8px 16px;
+    font-family: 'Roboto Flex', monospace;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.small-box {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap: 0.9rem;
+    overflow: hidden;
+    min-height: 0;
+    position: relative;
+}
+
+.small-box canvas {
+    flex-grow: 1;
+    display: block;
+    width: 100% !important;
+    height: 0 !important;
+    min-height: 100%;
+}
+#velocityChart {
+    width: 100% !important;
+    height: 100% !important;
+}
+#gyroChart {
+    width: 100% !important;
+    height: 100% !important;
+}
+#accelerationChart {
+    width: 100% !important;
+    height: 100% !important;
+}
+.gyro-panel {
+    /*grid-column: span 2;*/
+    overflow: hidden;
+    display: flex;             
+    flex-direction: column;    
+    height: 98%;
+    
+   
+}
+.gyro-chart-wrapper {
+    flex: 1;
+    width: 100%;
+    
+    position: relative;
+    padding: 5px;
+    box-sizing: border-box;
+    min-height: 0;
+}
+/*map-iframe {
+    width: 100%;
+    height: 100%;
+   border: none;
+}*/
+.map-wrapper {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    
+    min-height: 0;
+}
+#map {
+   
+   
+ position: absolute;  
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+#map canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+.map-panel {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+/* Styling for the new camera panel */
+.camera-panel {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+   height: 98%;
+}
+
+.camera-wrapper {
+   flex: 1;
+   aspect-ratio: 4/3;
+    width: 100%; 
+    
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+}
+
+#camera-feed {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Keeps the 320x240 ratio without stretching */
+}
+
+   
+
+/*.graph-container {
+    flex: 1;
+    margin: 5px;
+    border: 1px solid var(--border-dim);
+    border-radius: 8px;
+    background: rgba(0, 242, 255, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}*/
+
+/* Make canvas fit perfectly */
+/*.graph-container canvas {
+    width: 90% !important;
+    height: 100% !important;
+}*/
+
+/* Indicators */
+.val-cyan { color: cyan; font-weight: bold; }
+.val-yellow { color: cyan; font-weight: bold; }
+
+.error-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.led {
+    display: flex;
+    justify-content: center;
+    min-height: 32px;
+    padding: 4px 4px;
+    border: 1px solid var(--error-red);
+    border-radius: 8px;
+    align-items: center;
+    font-size: 0.78rem;
+    
+    text-align: center;
+}
+
+.led-green { background: rgba(51, 255, 51, 0.2); border-color: var(--success-green); }
+.led-red { background: rgba(255, 51, 51, 0.1); border-color: var(--error-red); gap: 3rem; }
+
+
+
+.right-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;       /* Keep matching height with the grid */
+    min-height: 0;
+}
+.right-sidebar .panel-body {
+    padding: 14px 12px;
+}
+
+
+/* Mission Phase Footer */
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 2fr;
+    gap: 7px;
+    height: 190px;
+    overflow: hidden;
+
+   
+}
+
+.phase-stepper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 50px;
+    height: 100%;
+     
+        gap: 6px;
+}
+
+.step {
+    text-align: center;
+    font-size: 0.9rem;
+    position: relative;
+     gap: 6px;
+}
+
+.dot {
+    display: flex;
+    justify-content: flex-start;
+    width: 25px;
+    height: 25px;
+    background: #111;
+    border-radius: 50%;
+    margin: 2px auto;
+    border: 1px solid var(--success-green);
+}
+.raw-data {
+        display: flex;
+        flex-direction: column;
+        height: 98%;
+        overflow: hidden;
+}
+
+.raw-data-container {
+    flex : 1;
+    height: 100%;
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column-reverse;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+}
+.terminal-text {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    color: #00ff41;
+    margin: 0;
+    line-height: 1.2;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.step.active .dot { background: var(--success-green); }
+.step.glow .dot { box-shadow: 0 0 15px var(--success-green); }
+
+.command-line {
+    border: 1px solid var(--cyan);
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    color: var(--cyan);
+    
+    
+}
+.cmd-input {
+    background: transparent;
+    border: none;
+    color: var(--cyan);
+    margin-left: 10px;
+    flex-grow: 1;
+    outline: none;
+    font-family: monospace;
+}
+
+.arrow {
+    font-size: 1.4rem;
+    color: yellow;
+    margin:5px 10px;
+    align-self: center;
+    width: auto;
+    height: auto;
+}
+.arrow i {
+    transition: 0.3s;
+}
+
+.arrow i:hover {
+    color: var(--cyan);
+    transform: scale(1.2);
+}
+
+/* Battery UI */
+.battery-bar {
+    background: linear-gradient(to right, var(--success-green) 100%, transparent 0%);
+    border: 1px solid var(--success-green);
+    border-radius: 10px;
+    padding: 2px 15px;
+    font-size: 1rem;
+    width: 100%;
+    text-align: center;
+}

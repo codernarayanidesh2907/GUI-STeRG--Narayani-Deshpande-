@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cansat Dashboard</title>
+<link rel="stylesheet" href="cansat.css">
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+<script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+
+<!--- Three.js library for 3D rendering -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+<!---<script src="sim.js" defer></script>-->
+
+
+<script src="data.js" defer></script>
+<!--<script src="Timer.js" defer></script>-->
+<script src="telemetry.js" defer></script>
+ <script src="gyro1.js" defer></script>
+ <script src="velo.js" defer></script>
+ <script src="accl.js" defer></script>
+
+
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="main-header">
+            <div class="logo"><img src="mitwpu logo.png" class="mit-logo"></div>
+            <div class="timer" id="timer">T-88 : 88</div>
+            <div class="title">Team Vishwashanti </div>
+            <div class="battery-container" id="battery">
+                <div class="battery-bar">100%</div>
+            </div>
+            <div class="group-logo"><img src="sterg logo.png" class="sterg-logo"></div>
+        </header>
+        <main class="grid-layout">
+            <aside class="sidebar">
+                <!----META DATA----->
+                <div class="panel">
+                <div class="panel-header">META DATA</div>
+                <div class="panel-body">
+                    <p>ID : <span id="id"></span></p>
+                    <p>Packet Count : <span id="packet-count"></span></p>
+                    <p>Time : <span id="time"></span></p>
+                </div>
+                </div>
+                <!---TELEMETRY DATA---->
+                
+                <div class="panel data-panel">
+                    <div class="panel-header">TELEMETRY DATA</div>
+                    <div class="panel-body">
+                        <p>Pressure : <span id="pressure" class="val-cyan"> Pa</span></p>
+                        <p>Temperature : <span id="temp" class="val-cyan"> C</span></p>
+                        <p>Current : <span id="current" class="val-cyan"> mA</span></p>
+                        <p>Altitude : <span id="altitude" class="val-cyan">--- m</span></p>
+                        <p>Velocity : <span id="velocity" class="val-cyan">--- m/s</span></p>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">ERROR FLAGS</div>
+                    <div class="panel-body error-grid">
+                        <div class="led led-green">E_NONE</div><div class="led led-red">E_LOW_BAT</div>
+                        <div class="led led-red">E_COMM_LOS</div><div class="led led-red">E_COMM_DELAY</div>
+                        <div class="led led-red">E_SD_FULL</div><div class="led led-red">E_FLASH</div>
+                        <div class="led led-red">E_PARA</div><div class="led led-red">E_PROP</div>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+            </aside>
+            <section class="visuals">
+                <div class="panel model-3d">
+                    <div class="panel-header">3D MODEL</div>
+                    <div id="model-container">
+                        <div class="orientation-overlay">
+            <div class="rpy-item">Roll: <span class="val-yellow">0.0°</span></div>
+            <div class="rpy-item">Pitch: <span class="val-yellow">0.0°</span></div>
+            <div class="rpy-item">Yaw: <span class="val-yellow">0.0°</span></div>
+        </div>
+        <div class="controls-overlay">
+            <button class="btn btn-calibrate" id="btn-calibrate">CALIBRATE</button>
+            <button class="btn btn-reset" id="btn-reset">RESET</button>
+        </div>
+                    </div>
+                    </div>
+                    <div class="center-subgrid">
+                    <div class="panel small-box">
+                        <div class="panel-header small">Acc</div>
+                        <div id="chart-wrapper">
+                            <canvas id="accelerationChart"></canvas>
+                            </div>
+                    </div>
+                    
+                    <div class="panel small-box gyro-panel">
+                        <div class="panel-header small">GYRO</div>
+                        <div id="gyro-chart-wrapper">
+                            <canvas id="gyroChart"></canvas>
+                            </div>
+                </div>
+                    
+                
+            
+                    <div class="panel small-box"><div class="panel-header small">Alt</div> 
+                    <canvas id="telemetryChart"></canvas>
+                </div>
+                    <div class="panel small-box"><div class="panel-header small">Vel</div>
+                    <div id="chart-wrapper">
+                        <canvas id="velocityChart"></canvas>
+                        </div>
+                </div>
+                
+                    <div class="panel small-box map-panel"><div class="panel-header small">MAP</div>
+                     <div class="map-wrapper">
+                        <div id="map"></div>
+                    </div>
+                    
+                       
+                
+                
+                </div>
+                 <div class="panel small-box camera-panel">
+               <div class="panel-header small">CAMERA</div>
+               <div class="camera-wrapper">
+              <img src="cam icon.png" id="camera-feed" alt="Live Feed">
+             </div>
+           </div> 
+                </section>
+                <aside class="right-sidebar">
+                <div class="panel">
+                    <div class="panel-header">ACCELERATION</div>
+                    <div class="panel-body">
+                        <p>X-axis : <span id="acc-x" class="val-yellow"> m/s^2</span></p>
+                        <p>Y-axis : <span id="acc-y" class="val-yellow"> m/s^2</span></p>
+                        <p>Z-axis : <span id="acc-z" class="val-yellow"> m/s^2</span></p>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">GYROSCOPE</div>
+                    <div class="panel-body">
+                        <p>X-axis : <span id="gyro-x" class="val-yellow"> °/s</span></p>
+                        <p>Y-axis : <span id="gyro-y" class="val-yellow"> °/s</span></p>
+                        <p>Z-axis : <span id="gyro-z" class="val-yellow"> °/s</span></p>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">MAGNETOMETER</div>
+                    <div class="panel-body">
+                        <p>X-axis : <span id="magnetometer-x" class="val-yellow"> uT</span></p>
+                        <p>Y-axis : <span id="magnetometer-y" class="val-yellow"> uT</span></p>
+                        <p>Z-axis : <span id="magnetometer-z" class="val-yellow"> uT</span></p>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">GNSS</div>
+                    <div class="panel-body">
+                        <p>Lat : <span id="lat" class="val-cyan">°</span></p>
+                        <p>Long : <span id="long" class="val-cyan">°</span></p>
+                        <p>Sat : <span id="sat" class="val-cyan"></span></p>
+                    </div>
+                </div>
+            </aside>
+
+        </main>
+        <div class="command-line">
+            $ Enter Command : <span class="cursor"></span>
+            <input type="text" class="cmd-input">
+        </div>
+        <footer class="footer-grid">
+            <div class="panel mission-phase">
+                <div class="panel-header">MISSION PHASE</div>
+                <div class="phase-stepper">
+                    <div class="step active">BOOT <div class="dot"></div></div>
+                    <div class="arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="step active glow">STANDBY <div class="dot"></div></div>
+                    <div class="arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="step">ASCENT <div class="dot"></div></div>
+                    <div class="arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="step">DESCENT <div class="dot"></div></div>
+                    <div class="arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="step">RECOVERY <div class="dot"></div></div>
+                </div>
+            </div>
+            <div class="panel raw-data">
+                <div class="panel-header">RAW DATA</div>
+                <div class="raw-data-container">
+                    <pre id="raw-stream-output" class="terminal-text">
+            </pre>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="Threejs/main.js"></script>
+    <script src="https://unpkg.com/deck.gl@9.0.30/dist.min.js"></script>
+    <script src="3DMaps.js" defer></script>
+</body>
+</html>
